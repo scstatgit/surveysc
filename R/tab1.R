@@ -1,3 +1,29 @@
+#' table1 function
+#'
+#' This function create table1 in biostatistics
+#' @param DESIGN: put survey data which is svydesign() from survey package
+#' @param STRATA: put stratification varaible
+#' @param OVERALL: if you want overall statistics, set TRUE
+#' @param CONDIGITS: digits of continuous variable
+#' @param CATDIGITS: digits of categorical variable
+#' @param FUNC: "mean" or "median"
+#' @param TYPE: type of print FUNC
+#' @param MARGIN: margin of percentage. 1 as row percent, and 2 as col percent
+#' @param MODE: mode of descriptive statistics. 1 as consider weights of complex design, 2 as do not consider weights for n size, 3 as do not consider complex design.
+#' @keywords create table1 in complex survey design
+#' @examples
+#' ddd <- select(apiclus2, dnum,pw,fpc1,api00,api99,target,sch.wide,comp.imp,meals)
+#' ddd <- preprocess(ddd)
+#' ddd$fpc1 <- as.numeric(as.character(ddd$fpc1))
+#' dclus1 <- svydesign(id=~dnum, weights=~pw, data=ddd, fpc=~fpc1)
+#' tab1(dclus1, MODE = 1)
+#' tab1(dclus1, MODE = 2)
+#' tab1(dclus1, MODE = 3)
+#' tab1(dclus1, STRATA = "sch.wide")
+#' tab1(dclus1, STRATA = "sch.wide", MODE = 1)
+#' tab1(dclus1, STRATA = "sch.wide", MODE = 2)
+#' tab1(dclus1, STRATA = "sch.wide", MODE = 3)
+#' tab1(dclus1, STRATA = "sch.wide", MARGIN = 1, OVERALL = T)
 #' @export
 tab1 <- function (DESIGN, STRATA = NULL, OVERALL = FALSE, CONDIGITS = 1, CATDIGITS = 1, FUNC = "mean", TYPE = 1, MARGIN = 2, MODE = 1) {
   mat1 <- tab1.describe0(DESIGN, var.lvs, STRATA)
