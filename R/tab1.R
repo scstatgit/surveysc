@@ -12,6 +12,8 @@
 #' @param MODE: mode of descriptive statistics. 1 as consider weights of complex design, 2 as do not consider weights for n size, 3 as do not consider complex design.
 #' @keywords create table1 in complex survey design
 #' @examples
+#' options(survey.lonely.psu = "adjust")
+#' options(survey.adjust.domain.lonely = TRUE)
 #' ddd <- select(apiclus2, dnum,pw,fpc1,api00,api99,target,sch.wide,comp.imp,meals)
 #' ddd <- preprocess(ddd)
 #' ddd$fpc1 <- as.numeric(as.character(ddd$fpc1))
