@@ -39,6 +39,8 @@ tab1(
 This function create table1 in biostatistics
 }
 \examples{
+options(survey.lonely.psu = "adjust")
+options(survey.adjust.domain.lonely = TRUE)
 ddd <- select(apiclus2, dnum,pw,fpc1,api00,api99,target,sch.wide,comp.imp,meals)
 ddd <- preprocess(ddd)
 ddd$fpc1 <- as.numeric(as.character(ddd$fpc1))
