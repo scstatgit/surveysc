@@ -29,15 +29,46 @@ tab1 <- function (DESIGN, STRATA = NULL, OVERALL = FALSE, CONDIGITS = 1, CATDIGI
   mat1 <- tab1.describe0(DESIGN, var.lvs, STRATA)
   mat2 <- tab1.describe1(DESIGN, STRATA, CONDIGITS = CONDIGITS, CATDIGITS = CATDIGITS, FUNC = FUNC, TYPE = TYPE, MODE = MODE)
   if (is.null(STRATA)) {
-    res <- cbind(mat1, mat2)
+    res <- cbind(mat1, mat2) %>% as.data.frame()
   }
   if (!is.null(STRATA)) {
     mat3 <- tab1.describe2(DESIGN, STRATA = STRATA, CONDIGITS = CONDIGITS, CATDIGITS = CATDIGITS, FUNC = FUNC, TYPE = TYPE, MARGIN = MARGIN, MODE = MODE)
-    res <- cbind(mat1, mat3)
+    res <- cbind(mat1, mat3) %>% as.data.frame()
+    # add pvals
+    t1.pval <- tab1.pval(design = DESIGN, strata = STRATA)
+    res <- left_join(res, t1.pval, by = "Characteristics") %>%
+      group_by(Characteristics) %>%
+      mutate(
+        pval = case_when(
+          row_number()==1 ~ pval,
+          TRUE ~ ""
+        ),
+        method = case_when(
+          row_number()==1 ~ method,
+          TRUE ~ ""
+        )
+      ) %>%
+      as.data.frame()
   }
   if (!is.null(STRATA) & isTRUE(OVERALL)) {
     mat3 <- tab1.describe2(DESIGN, STRATA = STRATA, CONDIGITS = CONDIGITS, CATDIGITS = CATDIGITS, FUNC = FUNC, TYPE = TYPE, MARGIN = MARGIN, MODE = MODE)
-    res <- cbind(mat1, mat2, mat3)
+    res <- cbind(mat1, mat2, mat3) %>% as.data.frame()
+    # add pvals
+    t1.pval <- tab1.pval(design = DESIGN, strata = STRATA)
+    res <- left_join(res, t1.pval, by = "Characteristics") %>%
+      group_by(Characteristics) %>%
+      mutate(
+        pval = case_when(
+          row_number()==1 ~ pval,
+          TRUE ~ ""
+        ),
+        method = case_when(
+          row_number()==1 ~ method,
+          TRUE ~ ""
+        )
+      ) %>%
+      as.data.frame()
   }
   return(res)
 }
+
